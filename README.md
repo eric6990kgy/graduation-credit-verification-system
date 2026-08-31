@@ -1,64 +1,112 @@
-# 國立政治大學 資訊科學系 畢業學分驗證系統
+# 🎓 國立政治大學 資訊科學系 畢業學分驗證系統
 (NCCU CS Graduation Credit Verification System)
 
-本系統專為國立政治大學資訊科學系學生設計，旨在自動化解析與驗證學生的修課成績，並視覺化呈現畢業學分門檻達成進度。
-
-## 🌟 系統特色 (Features)
-
-- **🎓 畢業門檻自動驗證**：
-  - 精準計算「專業必修 (51學分)」、「專業選修 (49學分)」、「通識大水庫 (28學分)」。
-  - 動態對齊政大資科系最新規範（含資訊專題、群修 B~E 歸類為系選修）。
-- **📊 視覺化儀表板 (Dashboard)**：
-  - 以圓形進度條與直觀的卡片呈現各類別學分達成率。
-  - 核心通識跨領域規定（自然、社會、人文）合併檢核與防呆預警。
-- **📝 詳細規則清單 (Graduation Rules)**：
-  - 一目了然的條列式清單，指出具體缺少哪些必修課與學分。
-- **🤖 選課推薦 (Course Recommendation)**：
-  - 根據學生尚未滿足的畢業門檻與選課歷史，推薦合適的課程。
-
-## 🚀 技術堆疊 (Tech Stack)
-
-### Frontend (前端)
-- React 18
-- Vite
-- TypeScript
-- Tailwind CSS
-- Lucide React (Icons)
-- React Router DOM
-
-### Backend (後端)
-- FastAPI (Python)
-- SQLite (資料庫)
-- SQLAlchemy (ORM)
-- Uvicorn (Server)
-
-## 🛠️ 本地執行指南 (Local Setup)
-
-### 方法一：使用 Docker 快速啟動 (推薦)
-透過 Docker，你可以一鍵啟動完整的前後端服務，無須設定環境：
-```bash
-docker-compose up --build -d
-```
-啟動後，瀏覽器開啟 `http://localhost:3000` 即可使用系統。(後端 API 會自動在 `http://localhost:8000` 運行)。
+本系統為 **國立政治大學「資料庫系統 (DBMS)」課程之期末專案**。旨在自動化解析與驗證學生的修課成績，並視覺化呈現畢業學分門檻達成進度，免除學生人工試算學分的繁瑣與延畢風險。
 
 ---
 
-### 方法二：手動啟動
-#### 1. 啟動後端 (Backend)
+## 🎯 專案定位與痛點 (Product Positioning)
+
+在大學部，畢業學分規則極其繁雜（包含專業必修、專業選修、通識大水庫、跨領域核心通識防呆等）。學生常因人工核對 Excel 發生失誤而導致遺漏學分被迫延畢。
+* **產品定位**：一個為政大資科系學生量身打造的**「一鍵學分檢核與智慧選課推薦平台」**。
+* **核心價值**：將複雜的教務處規章轉化為「視覺化儀表板」，並以「預警機制」與「個人化選課推薦」主動輔助學生規劃排課。
+
+---
+
+## 📋 專案經理 (PM) 實踐與排程分工
+
+本專案由 8 人團隊共同開發（分為四組），我擔任 **專案經理 (PM) 兼前端 UI/UX 開發** 角色，主導專案從零到一的產品定義、技術選型、時程規劃與組別分工。
+
+### ⏳ 專案排程與階段規劃 (Timeline)
+我們採用輕量敏捷開發，將 6 週的開發期劃分為三個主要階段：
+```mermaid
+gantt
+    title 專案開發甘特圖
+    dateFormat  YYYY-MM-DD
+    section 階段一：規劃與設計
+    需求分析與功能定義           :active, des1, 2026-09-01, 7d
+    ERD 設計與技術棧評估         :active, des2, after des1, 7d
+    section 階段二：核心開發
+    API 規格定義與前後端分離開發   :crit, dev1, after des2, 10d
+    學籍上傳解析與儀表板開發       :dev2, after dev1, 11d
+    section 階段三：優化與測試
+    選課推薦功能整合與 UI 優化    :opt1, after dev2, 7d
+    高併發壓力測試與部署 (Railway) :opt2, after opt1, 7d
+```
+
+* **階段一（W1~W2）：需求定義與架構設計**
+  * 分析政大資科最新課規，繪製實體關係圖 (ERD)，定義資料表結構。
+  * 評估技術棧，決定採用前後端分離架構。
+* **階段二（W3~W4）：核心功能開發**
+  * 制定 API 規格書，確保前後端並行開發不發生衝突。
+  * 實作成績單上傳解析模組與前端視覺化儀表板。
+* **階段三（W5~W6）：優化與測試**
+  * 整合個人化選課推薦演算法。
+  * 進行高併發壓力測試（模擬選課尖峰），調優 API 響應時間，並部署至 Railway 雲端平台。
+
+### 👥 團隊分工 (Team Roles)
+本專案共 8 人參與，為了提升協作效率，我們將團隊細分為以下 **四個小組**：
+
+* **1. 專案管理、產品規劃與品質測試組 (PM & UI/UX Design & QA) (由我主導)**
+  * **我的 PM 職責**：負責產品定位、功能範疇 (Scope) 定義、甘特圖時程管理。主導跨組溝通，將複雜的政大畢業學分課規整理成結構化的「邏輯判斷樹」，協助後端組設計資料表結構。
+  * **前端 UI/UX 設計與核心實作 (Hands-on Coding)**：由於當時負責前端開發的組員較缺乏資訊與網頁開發背景，我主動進行技術補位，親自負責並完成了本專案前端核心架構、視覺介面與互動功能的代碼實作（使用 React 18 + TypeScript + Tailwind CSS），主導前端的交付。
+  * **品質保證與壓力測試 (QA & Load Testing)**：**發揮統計系對數據驗證的專業優勢，親自編寫 Python 壓力測試腳本，模擬 100 位虛擬用戶進行高併發效能驗證，分析 P95 延遲與錯誤率以確保系統可靠度。**
+* **2. 前端開發組 (Frontend Engineering)**
+  * 在我搭建的前端核心框架與技術支援下，協同前端組員進行畫面元件微調、樣式適配與局部細節開發。
+* **3. 後端與 API 開發組 (Backend & API)**
+  * 負責使用 FastAPI (Python) 設計 RESTful API 路由，實作 SQLAlchemy ORM 與資料處理邏輯，確保前後端並行開發無縫對接。
+* **4. 資料庫組 (Database)**
+  * 負責設計資料表結構（Schema）並架設 SQLite/MySQL 資料庫，編寫核心學分解析演算法與課程推薦邏輯。
+
+---
+
+## 🌟 系統特色 (Features)
+
+* **🎓 畢業門檻自動驗證**：精準計算「專業必修」、「專業選修」、「通識大水庫」等學分，自動對齊政大資科最新規範。
+* **📊 視覺化儀表板 (Dashboard)**：以圓形進度條與直觀卡片呈現達成率，並針對核心通識跨領域規定提供防呆預警。
+* **🤖 智慧選課推薦 (Course Recommendation)**：根據學生尚未滿足的畢業門檻與歷史修課紀錄，自動推薦合適課程。
+* **📝 詳細規則清單 (Graduation Rules)**：條列式呈現具體缺少哪些必修課與學分，讓學生一目了然。
+
+---
+
+## 🚀 技術棧 (Tech Stack)
+
+### 前端 (Frontend)
+* **React 18 + Vite + TypeScript**：利用 React 的組件化加速 UI 開發；引進 TypeScript 強型別，在編譯期即抓出學分數據處理的潛在錯誤。
+* **Tailwind CSS**：打造高質感、符合 RWD 的響應式介面，保證行動端與 PC 端的流暢體驗。
+* **React Router DOM & Lucide React**：管理單頁應用 (SPA) 路由與提供現代化圖標。
+
+### 後端 (Backend)
+* **FastAPI (Python)**：高吞吐量、自動生成 OpenAPI 文件，極大提升前後端協作開發效率。
+* **SQLite / MySQL & SQLAlchemy**：本機開發使用輕量 SQLite 以提升開發速度；生產環境相容 MySQL 資料庫。
+
+---
+
+## 📊 效能驗證與品質保證 (Load Testing)
+
+為了驗證系統在選課尖峰時段（高併發流量）下的穩定性，我們主導了自動化壓力測試：
+* **測試方式**：自研 Python 壓測腳本，模擬最高 **100 位虛擬用戶 (Virtual Users)** 同時登入系統並進行高強度的資料庫 API 讀取。
+* **測試指標**：
+  * **錯誤率 (Error Rate)**：**0%**，證明在高負載下系統無記憶體洩漏或資料庫鎖死問題。
+  * **P95 延遲 (p95_ms)**：**小於 1 秒**，確保最慢的 5% 用戶依然能在合理時間內收到學分檢核結果。
+
+---
+
+## 🛠️ 本地快速執行指南 (Local Setup)
+
+### 1. 後端啟動 (Backend)
 ```bash
 cd dbms_final_backend
 pip install -r requirements.txt
-python seed.py # 初始化資料庫與規則
-python -m uvicorn app.main:app --reload --port 8000
+python seed.py # 初始化本地 SQLite 資料庫與預設規則
+python -m uvicorn app.main:app --reload --port 8001
 ```
+*後端將運行於 `http://localhost:8001`*
 
-#### 2. 啟動前端 (Frontend)
+### 2. 前端啟動 (Frontend)
 ```bash
 cd graduation-credit-verification-system
 npm install
 npm run dev
 ```
-瀏覽器開啟 `http://localhost:3000` 即可使用系統。
-
-## 👥 開發團隊
-本專案為政大資料庫系統課程 (DBMS) 期末專案。
+*前端將運行於 `http://localhost:3000`。預設測試學號：`111001001`，密碼：`password123`。*

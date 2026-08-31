@@ -14,13 +14,20 @@ class Base(DeclarativeBase):
 
 # 建立資料庫引擎
 # engine 負責管理 Python 和 MySQL 之間的連線
-engine = create_engine(
-    settings.DATABASE_URL,
-    echo=False,
-    pool_size=20,
-    max_overflow=30,
-    pool_pre_ping=True
-)
+if settings.DATABASE_URL.startswith("sqlite"):
+    engine = create_engine(
+        settings.DATABASE_URL,
+        echo=False,
+        connect_args={"check_same_thread": False}
+    )
+else:
+    engine = create_engine(
+        settings.DATABASE_URL,
+        echo=False,
+        pool_size=20,
+        max_overflow=30,
+        pool_pre_ping=True
+    )
 
 
 # 建立 Session 工廠
