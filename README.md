@@ -49,9 +49,9 @@ gantt
 
 * **1. 專案管理與產品規劃組 (PM & UI/UX Design) (由我主導)**
   * **我的 PM 職責**：負責產品定位、功能範疇 (Scope) 定義、甘特圖時程管理。主導跨組溝通，將複雜的政大畢業學分課規整理成結構化的「邏輯判斷樹」，協助後端組設計資料表結構。
-  * **前端 UI/UX 設計與核心實作 (Hands-on Coding)**：由於當時負責前端開發的組員較缺乏資訊與網頁開發背景，我主動進行技術補位，親自負責並完成了本專案前端核心架構、視覺介面與互動功能的代碼實作（使用 React 18 + TypeScript + Tailwind CSS），主導前端的交付。
+  * **前端 UI/UX 設計與開發規劃**：主導產品的使用者路徑 (User Journey) 設計、畫面原型視覺化，並負責前端系統的架構整合與跨組聯調，協助前端組順利完成基於 React 18 + TypeScript + Tailwind CSS 的介面交付。
 * **2. 前端開發組 (Frontend Engineering)**
-  * 在我搭建的前端核心框架與技術支援下，協同前端組員進行畫面元件微調、樣式適配與局部細節開發。
+  * 負責 React 18、TypeScript 與 Tailwind CSS 前端介面的功能開發、畫面元件實作與細節微調。
 * **3. 後端與 API 開發組 (Backend & API)**
   * 負責使用 FastAPI (Python) 設計 RESTful API 路由，實作 SQLAlchemy ORM 與資料處理邏輯，確保前後端並行開發無縫對接。
 * **4. 資料庫組 (Database)**
